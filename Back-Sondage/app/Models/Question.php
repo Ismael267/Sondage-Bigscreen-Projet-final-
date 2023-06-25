@@ -27,8 +27,8 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
-    public function surveys()
-    {
-        return $this->belongsTo(Survey::class);
-    }
+    // public function surveys()
+    // {
+    //     return $this->belongsTo(Survey::class);
+    // }
 }

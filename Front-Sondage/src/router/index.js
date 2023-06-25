@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import QuestionSondage from '../views/public/QuestionSondage.vue'
 import Login from '../views/public/auth/Login.vue'
 import Register from '../views/public/auth/Register.vue'
+import Acceuil from '../views/admin/Accueil.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/Accueil',
+      name: 'accueil',
+      component: Acceuil
     },
     {
       path: '/about',
