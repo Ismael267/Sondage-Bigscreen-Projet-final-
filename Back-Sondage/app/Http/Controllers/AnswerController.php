@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use Ramsey\Uuid\Uuid;
 use App\Models\Answer;
+use App\Models\SurveyToken;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreAnswerRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UpdateAnswerRequest;
+use App\Models\Question;
 
 class AnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function allAnswer()
     {
         //
+        $answers=Answer::all();
+        return response()->json([
+            'message' => 'Liste des reponses récupérée avec succès',
+            'data' => $answers
+        ], 200);
     }
 
     /**
@@ -27,10 +37,31 @@ class AnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAnswerRequest $request)
+    public function createAnswer(Request $request, $question_id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'answer' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            // Les données de la requête sont invalides
+            return response()->json(['error' => 'Invalid data'], 405);
+        }
+
+        $question = Question::find($question_id);
+        if (!$question) {
+            return response()->json(['error' => 'Question not found'], 404);
+        }
+
+        $answer = new Answer;
+        $answer->answer = $request->input('answer');
+        $answer->question()->associate($question);
+        $answer->save();
+
+        return response()->json(['message' => 'Answer created'], 201);
     }
+
+
 
     /**
      * Display the specified resource.

@@ -118,14 +118,14 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 18,
                 'body' => 'Aimeriez-vous pouvoir enregistrer des émissions TV pour pouvoir les regarder ultérieurement ?',
-                'type' => 'C',
-                'choices' => null,
+                'type' => 'A',
+                'choices' => ['Oui', 'Non'],
             ],
             [
                 'title' => 19,
                 'body' => 'Aimeriez-vous jouer à des jeux exclusifs sur votre Bigscreen ?',
-                'type' => 'C',
-                'choices' => null,
+                'type' => 'A',
+                'choices' => ['Oui', 'Non'],
             ],
             [
                 'title' => 20,

@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
+use App\Models\Answer;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +27,7 @@ Route::post('logout', [UserController::class, 'logout']);
 // route pour ajouter une question
 Route::post('/question/add',[QuestionController::class,'store']);
 // route pour avoir la liste des questions
+
 Route::get('/question/all',[QuestionController::class,'index']);
+route::post('/answer/add/{question_id}',[AnswerController::class,'createAnswer']);
+route::get('/answer/all',[AnswerController::class,'allAnswer']);
