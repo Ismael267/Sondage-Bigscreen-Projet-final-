@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Ramsey\Uuid\Uuid;
 use App\Models\SurveyToken;
+use Illuminate\Support\Str;
 use App\Http\Requests\StoreSurveyTokenRequest;
 use App\Http\Requests\UpdateSurveyTokenRequest;
 
@@ -19,10 +21,16 @@ class SurveyTokenController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+
+     public function create()
+     {
+
+     }
+    //  public function addSurvey(){
+    //     $token = Uuid::uuid4()->toString();
+    //     $surveyToken = SurveyToken::create(['token' => $token]);
+    //     return response()->json(['token' => $surveyToken->token], 201);
+    //  }
 
     /**
      * Store a newly created resource in storage.

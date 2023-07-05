@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SurveyTokenController;
 use App\Models\Answer;
 
 /*
@@ -28,6 +29,11 @@ Route::post('logout', [UserController::class, 'logout']);
 Route::post('/question/add',[QuestionController::class,'store']);
 // route pour avoir la liste des questions
 
+Route::get('test', function(){
+    return 'OK';
+});
+
 Route::get('/question/all',[QuestionController::class,'index']);
-route::post('/answer/add/{question_id}',[AnswerController::class,'createAnswer']);
-route::get('/answer/all',[AnswerController::class,'allAnswer']);
+Route::post('/answer/add/{question_id}',[AnswerController::class,'addAnswer']);
+Route::get('/answer/all',[AnswerController::class,'allAnswer']);
+Route::post('/survey/create',[SurveyTokenController::class,'addSurvey']);

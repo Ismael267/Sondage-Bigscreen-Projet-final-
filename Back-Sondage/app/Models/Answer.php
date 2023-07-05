@@ -13,7 +13,16 @@ class Answer extends Model
      *
      * @var array<string>
      */
-    protected $fillable = ["answer", "question_id"];
+    protected $fillable = ['answer','question_id', 'survey_token_id'];
+
+     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'answer' => 'array',
+    ];
 
     public function question()
     {

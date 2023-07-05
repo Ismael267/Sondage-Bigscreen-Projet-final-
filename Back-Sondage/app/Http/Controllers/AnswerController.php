@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 use App\Models\Answer;
 use App\Models\SurveyToken;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreAnswerRequest;
+// use App\Http\Requests\StoreAnswerRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UpdateAnswerRequest;
 use App\Models\Question;
@@ -37,29 +37,46 @@ class AnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function createAnswer(Request $request, $question_id)
-    {
-        $validator = Validator::make($request->all(), [
-            'answer' => 'required|array',
-        ]);
 
-        if ($validator->fails()) {
-            // Les données de la requête sont invalides
-            return response()->json(['error' => 'Invalid data'], 405);
+
+     public function store(){
+
+     }
+     public function addAnswer(Request $request, $question_id)
+     {
+         $validator = Validator::make($request->all(), [
+             'answer' => 'required|array',
+             // 'answer.*' => 'required|string',
+         ]);
+
+         if ($validator->fails()) {
+             return response()->json(['error' => $validator->errors()], 405);
+         }
+
+         $question = Question::find($question_id);
+
+         $answers = [];
+         $token = Uuid::uuid4()->toString();
+         $surveyToken = SurveyToken::create(['token' => $token]);
+         foreach ($request->input('answer') as $answerText) {
+            $answer = new Answer();
+            $answer->answer = $answerText;
+            $answer->question()->associate($question);
+            $answer->surveyToken()->associate($surveyToken);
+            $answers[] = $answer;
         }
 
-        $question = Question::find($question_id);
-        if (!$question) {
-            return response()->json(['error' => 'Question not found'], 404);
+        foreach ($answers as $answer) {
+            $answer->save();
         }
 
-        $answer = new Answer;
-        $answer->answer = $request->input('answer');
-        $answer->question()->associate($question);
-        $answer->save();
+         return response()->json(['message' => 'Answers created', 'token' => $token], 201);
+     }
 
-        return response()->json(['message' => 'Answer created'], 201);
-    }
+
+
+
+
 
 
 
