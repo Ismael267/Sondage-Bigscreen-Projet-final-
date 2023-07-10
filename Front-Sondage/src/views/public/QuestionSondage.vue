@@ -46,30 +46,26 @@ export default {
     },
     async addAnswer() {
       try {
-        
         for (let index = 0; index < this.questions.length; index++) {
           const question = this.questions[index];
           const questionId = question.id;
-           
-
           const answers = {
             answer: [this.answers[index]], // Envoyez chaque réponse individuellement dans un tableau
           };
           const ol =JSON.stringify(answers);
           console.log(ol);
-          const response = await fetch(`http://127.0.0.1:8000/api/answer/add/${questionId}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(answers),
-          });
-
-          if (response.ok) {
-            console.log("Réponse ajoutée avec succès");
-          } else {
-            console.log(response);
-          }
+          // const response = await fetch(`http://127.0.0.1:8000/api/answer/add`, {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          //   body: JSON.stringify(answers),
+          // });
+          // if (response.ok) {
+          //   console.log("Réponse ajoutée avec succès");
+          // } else {
+          //   console.log(response);
+          // }
         }
       } catch (error) {
         console.log(error);

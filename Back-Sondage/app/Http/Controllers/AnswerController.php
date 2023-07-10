@@ -19,7 +19,7 @@ class AnswerController extends Controller
     public function allAnswer()
     {
         //
-        $answers=Answer::all();
+        $answers = Answer::all();
         return response()->json([
             'message' => 'Liste des reponses récupérée avec succès',
             'data' => $answers
@@ -39,39 +39,42 @@ class AnswerController extends Controller
      */
 
 
-     public function store(){
+    public function store()
+    {
+    }
+    public function addAnswer(Request $request)
+    {
+        $answers = $request->input('answer');
 
-     }
-     public function addAnswer(Request $request, $question_id)
-     {
-         $validator = Validator::make($request->all(), [
-             'answer' => 'required|array',
-             // 'answer.*' => 'required|string',
-         ]);
+        $validator = Validator::make($request->all(), [
+            'answer' => 'required|array',
+        ]);
 
-         if ($validator->fails()) {
-             return response()->json(['error' => $validator->errors()], 405);
-         }
-
-         $question = Question::find($question_id);
-
-         $answers = [];
-         $token = Uuid::uuid4()->toString();
-         $surveyToken = SurveyToken::create(['token' => $token]);
-         foreach ($request->input('answer') as $answerText) {
-            $answer = new Answer();
-            $answer->answer = $answerText;
-            $answer->question()->associate($question);
-            $answer->surveyToken()->associate($surveyToken);
-            $answers[] = $answer;
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 405);
         }
+
+        // $question = Question::find($question_id);
+        $token = Uuid::uuid4()->toString();
+        $surveyToken =new SurveyToken();
+        $surveyToken -> token=$token;
+        $surveyToken -> save();
+
 
         foreach ($answers as $answer) {
-            $answer->save();
+            Answer::create([
+                'answer' => $answer,
+                // 'question_id' => $question->id,
+                'survey_token_id' => $surveyToken->id,
+            ]);
         }
 
-         return response()->json(['message' => 'Answers created', 'token' => $token], 201);
-     }
+        return response()->json(['message' => 'Answers created', 'token' => $token], 201);
+    }
+
+
+
+
 
 
 

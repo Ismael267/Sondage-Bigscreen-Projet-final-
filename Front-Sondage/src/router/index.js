@@ -3,7 +3,11 @@ import HomeView from '../views/HomeView.vue'
 import QuestionSondage from '../views/public/QuestionSondage.vue'
 import Login from '../views/public/auth/Login.vue'
 import Register from '../views/public/auth/Register.vue'
-import Acceuil from '../views/admin/Accueil.vue'
+import NotFound from '../views/public/NotFound.vue'
+import StatAdmin from '../views/admin/StatAdmin.vue'
+import QuestionAdmin from '../views/admin/QuestionAdmin.vue'
+import AnswerAdmin from '../views/admin/AnswerAdmin.vue'
+import { authGuard } from '../_helpers/auth-guard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,10 +28,32 @@ const router = createRouter({
       component: Register
     },
     {
-      path: '/Accueil',
-      name: 'accueil',
-      component: Acceuil
+      path: '/statAdmin',
+      name: 'statAdmin',
+      beforeEnter:authGuard,
+      component: StatAdmin,
+      children:[
+        {
+          path: '/QuestionAdmin',
+          name: 'questionAdmin',
+          component: QuestionAdmin
+        },
+        {
+          path: '/AnswerAdmin',
+          name: 'answerAdmin',
+          component: AnswerAdmin
+        },
+      ]
     },
+    {
+      path: '/404',
+      name: '404',
+      component: NotFound
+    },
+    {
+      path:'/:pathmatch(.*)*',
+      redirect:'/404'
+     },
     {
       path: '/about',
       name: 'about',
@@ -38,5 +64,10 @@ const router = createRouter({
     }
   ]
 })
-
+router.beforeEach((to,from,next)=>{
+  if (to.matched[0].name=='statAdmin') {
+    authGuard()
+  }
+  next()
+})
 export default router
