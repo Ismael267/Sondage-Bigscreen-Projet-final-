@@ -1,17 +1,15 @@
 <template>
+
+
     <div>
         <DashboardAdmin/>
-        je suis stat
+        <RouterView />
     </div>
-  
 </template>
 <script>
 import DashboardAdmin from '../../components/DashboardAdmin.vue';
 export default{
-    components: {DashboardAdmin}
+    name: "AdminLayout",
+    components: { DashboardAdmin }
 }
 </script>
-
-<style>
-
-</style>

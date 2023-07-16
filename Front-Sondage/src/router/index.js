@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import QuestionSondage from '../views/public/QuestionSondage.vue'
+import AnswerSondage from '../views/public/AnswerSondage.vue'
 import Login from '../views/public/auth/Login.vue'
 import Register from '../views/public/auth/Register.vue'
 import NotFound from '../views/public/NotFound.vue'
 import StatAdmin from '../views/admin/StatAdmin.vue'
+import AdminLayout from '../views/admin/AdminLayout.vue'
 import QuestionAdmin from '../views/admin/QuestionAdmin.vue'
 import AnswerAdmin from '../views/admin/AnswerAdmin.vue'
 import { authGuard } from '../_helpers/auth-guard'
@@ -18,6 +20,11 @@ const router = createRouter({
       component: QuestionSondage
     },
     {
+      path: '/answerSondage',
+      name: 'answerSondage',
+      component: AnswerSondage
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login
@@ -28,10 +35,10 @@ const router = createRouter({
       component: Register
     },
     {
-      path: '/statAdmin',
-      name: 'statAdmin',
+      path: '/AdminLayout',
+      name: 'AdminLayout',
       beforeEnter:authGuard,
-      component: StatAdmin,
+      component: AdminLayout,
       children:[
         {
           path: '/QuestionAdmin',
@@ -42,6 +49,11 @@ const router = createRouter({
           path: '/AnswerAdmin',
           name: 'answerAdmin',
           component: AnswerAdmin
+        },
+        {
+      path: '/statAdmin',
+      name: 'statAdmin',
+      component: StatAdmin,
         },
       ]
     },

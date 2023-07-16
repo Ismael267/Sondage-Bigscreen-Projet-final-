@@ -19,11 +19,13 @@ class AnswerController extends Controller
     public function allAnswer()
     {
         //
-        $answers = Answer::all();
-        return response()->json([
-            'message' => 'Liste des reponses récupérée avec succès',
-            'data' => $answers
-        ], 200);
+        // $answers = Answer::all();
+        // return response()->json([
+        //     'message' => 'Liste des reponses récupérée avec succès',
+        //     'data' => $answers
+        // ], 200);
+
+
     }
 
     /**
@@ -44,33 +46,46 @@ class AnswerController extends Controller
     }
     public function addAnswer(Request $request)
     {
-        $answers = $request->input('answer');
+        $answers = $request->input('answers');
 
         $validator = Validator::make($request->all(), [
-            'answer' => 'required|array',
+            'answers' => 'required|array',
+            'answers.*.answer' => 'required',
+            'answers.*.questionId' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 405);
+            return response()->json(['erreur' => $validator->errors()], 405);
         }
 
-        // $question = Question::find($question_id);
         $token = Uuid::uuid4()->toString();
-        $surveyToken =new SurveyToken();
-        $surveyToken -> token=$token;
-        $surveyToken -> save();
-
+        $surveyToken = new SurveyToken();
+        $surveyToken->token = $token;
+        $surveyToken->save();
 
         foreach ($answers as $answer) {
             Answer::create([
-                'answer' => $answer,
-                // 'question_id' => $question->id,
+                'answer' => $answer['answer'],
+                'question_id' => $answer['questionId'],
                 'survey_token_id' => $surveyToken->id,
             ]);
         }
 
-        return response()->json(['message' => 'Answers created', 'token' => $token], 201);
+        return response()->json(['message' => 'Réponses créées', 'token' => $token], 201);
     }
+
+    public function displayAnswers($token)
+{
+    $surveyToken = SurveyToken::where('token', $token)->first();
+
+    if (!$surveyToken) {
+        return response()->json(['erreur' => 'Token invalide'], 404);
+    }
+
+    $answers = Answer::where('survey_token_id', $surveyToken->id)->get();
+
+    return response()->json(['answers' => $answers, 'created_at' => $surveyToken->created_at,], 200);
+}
 
 
 

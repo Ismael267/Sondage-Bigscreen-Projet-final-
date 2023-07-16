@@ -27,6 +27,7 @@
         </div>
       </div>
     </nav>
+    
   </template>
 <script>
 import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -36,7 +37,7 @@ export default{
   methods: {
     deleteToken() {
       localStorage.removeItem('token');
-      this.$router.push("/")
+      this.$router.push("/login")
     }
   },
 }

@@ -34,6 +34,11 @@ Route::get('test', function(){
 });
 
 Route::get('/question/all',[QuestionController::class,'index']);
-Route::post('/answer/add/{question_id}',[AnswerController::class,'addAnswer']);
+Route::post('/answer/add',[AnswerController::class,'addAnswer']);
 Route::get('/answer/all',[AnswerController::class,'allAnswer']);
 Route::post('/survey/create',[SurveyTokenController::class,'addSurvey']);
+Route::middleware('auth:api')->group(function () {
+
+    //routes accessibles uniquement si l'utilisateur est connecté
+});
+route::get('/answer/display/{token}',[AnswerController::class,'displayAnswers']);

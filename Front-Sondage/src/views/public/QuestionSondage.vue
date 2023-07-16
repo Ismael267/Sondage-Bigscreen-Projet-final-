@@ -1,25 +1,28 @@
 <template>
   <div>
     <p class="title">Merci de répondre à toutes les questions et de valider le formulaire en bas de page.</p>
-    {{answers}}
     <div class="form">
       <form @submit.prevent="addAnswer">
-        <div class="element" v-for="(question, index) in questions" :key="question.id">
+        <div class="card" v-for="(question, index) in questions" :key="question.id">
           <h1 class="question-title">Question {{ index + 1 }}/{{ count }}</h1>
-          <p class="question-body">{{ question.body }}</p>
-          <div v-if="question.type === 'A'" class="choice-container">
-            <select v-model="answers[index]" class="choice-select" required>
-              <option v-for="choice in getChoices(question.choices)" :value="choice" :key="choice">{{ choice }}</option>
-            </select>
-          </div>
-          <div v-else-if="question.type === 'B'" class="choice-container">
-            <input type="text" maxlength="255" v-model="answers[index]" class="choice-input" required>
-          </div>
-          <div v-else-if="question.type === 'C'" class="choice-container">
-            <input type="number" min="1" max="5" v-model="answers[index]" class="choice-input" required>
+          <div class="card-body">
+            <p class="question-body">{{ question.body }}</p>
+            <div v-if="question.type === 'A'" class="choice-container">
+              <select v-model="answers[index]" class="choice-select" required>
+                <option v-for="choice in getChoices(question.choices)" :value="choice" :key="choice">{{ choice }}</option>
+              </select>
+            </div>
+            <div v-else-if="question.type === 'B'" class="choice-container">
+              <input type="text" :id="question.id" maxlength="255" v-model="answers[index]" class="choice-input" :required="question.id !== 1 || isEmail(answers[index])" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+            </div>
+            <div v-else-if="question.type === 'C'" class="choice-container">
+              <input type="number" min="1" max="5" v-model="answers[index]" class="choice-input" required>
+            </div>
           </div>
         </div>
-        <button type="submit" class="submit-button">Finaliser</button>
+        <div class="button-container">
+          <button type="submit" class="submit-button">Finaliser</button>
+        </div>
       </form>
     </div>
   </div>
@@ -44,31 +47,40 @@ export default {
       }
       return choices;
     },
+    isEmail(value) {
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+      return emailRegex.test(value);
+    },
     async addAnswer() {
+      const answers = this.questions.map((question, index) => {
+        return {
+          questionId: question.id,
+          answer: this.answers[index]
+        };
+      });
+      
       try {
-        for (let index = 0; index < this.questions.length; index++) {
-          const question = this.questions[index];
-          const questionId = question.id;
-          const answers = {
-            answer: [this.answers[index]], // Envoyez chaque réponse individuellement dans un tableau
-          };
-          const ol =JSON.stringify(answers);
-          console.log(ol);
-          // const response = await fetch(`http://127.0.0.1:8000/api/answer/add`, {
-          //   method: "POST",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          //   body: JSON.stringify(answers),
-          // });
-          // if (response.ok) {
-          //   console.log("Réponse ajoutée avec succès");
-          // } else {
-          //   console.log(response);
-          // }
+        const response = await fetch(`http://127.0.0.1:8000/api/answer/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ answers }),
+        });
+
+        const responseData = await response.json();
+        localStorage.setItem("token", responseData.Token);
+        this.$router.push({ name: "" });
+
+        if (response.ok) {
+          console.log("Réponses ajoutées avec succès");
+        } else {
+          throw new Error(responseData.error.join(", "));
         }
       } catch (error) {
         console.log(error);
+        // Gérer les erreurs de validation ici
+        // Afficher les messages d'erreur à l'utilisateur
       }
     },
   },
@@ -95,6 +107,11 @@ export default {
 </script>
 
 <style>
+.card {
+  margin: 50px 0px;
+  padding: 20px;
+  background-color: #f8f8f8;
+}
 .title {
   text-align: center;
   font-size: 1.7em;
@@ -102,8 +119,7 @@ export default {
 }
 
 .form {
-  background-color: #f8f8f8;
-  padding: 35px;
+  padding: 0px;
   border-radius: 10px;
   color: #333333;
   margin-top: 50px;
@@ -132,6 +148,7 @@ export default {
   border: 1px solid #dddddd;
   border-radius: 5px;
   font-family: poppins;
+  background-color: #efeeee;
 }
 
 .submit-button {
@@ -143,7 +160,6 @@ export default {
   font-size: 16px;
   cursor: pointer;
   margin-left: auto;
-
 }
 
 .submit-button:hover {
