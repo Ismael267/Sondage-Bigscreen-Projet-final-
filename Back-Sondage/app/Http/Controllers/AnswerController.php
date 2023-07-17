@@ -19,11 +19,11 @@ class AnswerController extends Controller
     public function allAnswer()
     {
         //
-        // $answers = Answer::all();
-        // return response()->json([
-        //     'message' => 'Liste des reponses récupérée avec succès',
-        //     'data' => $answers
-        // ], 200);
+        $answers = Answer::all();
+        return response()->json([
+            'message' => 'Liste des reponses récupérée avec succès',
+            'data' => $answers
+        ], 200);
 
 
     }
@@ -81,11 +81,12 @@ class AnswerController extends Controller
     if (!$surveyToken) {
         return response()->json(['erreur' => 'Token invalide'], 404);
     }
-
     $answers = Answer::where('survey_token_id', $surveyToken->id)->get();
 
     return response()->json(['answers' => $answers, 'created_at' => $surveyToken->created_at,], 200);
 }
+
+
 
 
 

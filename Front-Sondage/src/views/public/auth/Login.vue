@@ -61,7 +61,7 @@ export default {
             throw new Error("Échec de la connexion. Veuillez vérifier vos informations d'identification.");
           }
           localStorage.setItem("token", data.Token);
-          this.$router.push({ name: "statAdmin" });
+          this.$router.push({ name: "Administration" });
         })
         .catch(error => {
           this.errorMessage = error.message;

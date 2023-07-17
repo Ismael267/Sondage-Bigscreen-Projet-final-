@@ -20,7 +20,7 @@ const router = createRouter({
       component: QuestionSondage
     },
     {
-      path: '/answerSondage',
+      path: '/answerSondage/:answerToken',
       name: 'answerSondage',
       component: AnswerSondage
     },
@@ -51,9 +51,9 @@ const router = createRouter({
           component: AnswerAdmin
         },
         {
-      path: '/statAdmin',
-      name: 'statAdmin',
-      component: StatAdmin,
+          path: '/Administration',
+          name: 'Administration',
+          component: StatAdmin,
         },
       ]
     },

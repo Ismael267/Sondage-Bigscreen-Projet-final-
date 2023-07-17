@@ -24,6 +24,9 @@
           <button type="submit" class="submit-button">Finaliser</button>
         </div>
       </form>
+      <div v-if="showNotification" class="notification">
+        <p>{{ notificationText }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +38,8 @@ export default {
       questions: [],
       count: 0,
       answers: [],
+      showNotification: false,
+      notificationText: ""
     };
   },
   methods: {
@@ -58,39 +63,41 @@ export default {
           answer: this.answers[index]
         };
       });
-      
+
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/answer/add`, {
+        const response = await fetch("http://127.0.0.1:8000/api/answer/add", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({ answers }),
+          body: JSON.stringify({ answers })
         });
 
-        const responseData = await response.json();
-        localStorage.setItem("token", responseData.Token);
-        this.$router.push({ name: "" });
-
         if (response.ok) {
+          const responseData = await response.json();
+          console.log(responseData.token);
+          const token =responseData.token
+          this.$router.push({ name: "answerSondage", params: { answerToken: token} });
+          this.showNotification = true;
+          this.notificationText = "Réponses ajoutées avec succès";
           console.log("Réponses ajoutées avec succès");
         } else {
-          throw new Error(responseData.error.join(", "));
+          throw new Error("Error adding answers.");
         }
       } catch (error) {
         console.log(error);
-        // Gérer les erreurs de validation ici
-        // Afficher les messages d'erreur à l'utilisateur
+        // Handle validation errors here
+        // Display error messages to the user
       }
-    },
+    }
   },
   mounted() {
     fetch("http://127.0.0.1:8000/api/question/all", {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      method: "GET",
+      method: "GET"
     })
       .then((response) => response.json())
       .then((data) => {
@@ -102,7 +109,7 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-  },
+  }
 };
 </script>
 
