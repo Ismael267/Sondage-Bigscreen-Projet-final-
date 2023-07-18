@@ -42,3 +42,5 @@ Route::middleware('auth:api')->group(function () {
     //routes accessibles uniquement si l'utilisateur est connecté
 });
 route::get('/answer/display/{token}',[AnswerController::class,'displayAnswers']);
+
+route::get('/answer/group',[AnswerController::class,"groupedAnswers"]);

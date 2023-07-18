@@ -24,8 +24,6 @@ class AnswerController extends Controller
             'message' => 'Liste des reponses récupérée avec succès',
             'data' => $answers
         ], 200);
-
-
     }
 
     /**
@@ -85,6 +83,34 @@ class AnswerController extends Controller
 
     return response()->json(['answers' => $answers, 'created_at' => $surveyToken->created_at,], 200);
 }
+
+
+
+public function groupedAnswers()
+{
+    $answers = Answer::with('question')->get()->groupBy('survey_token_id');
+
+    return response()->json([
+        'message' => 'Liste des réponses regroupées par surveytoken récupérée avec succès',
+        'data' => $answers
+    ], 200);
+}
+
+
+
+  // $tokens = SurveyToken::pluck('token')->all();
+    // $groupedAnswers = [];
+
+    // foreach ($tokens as $token) {
+    //     $answers = Answer::where('survey_token_id', $token)->get();
+    //     $groupedAnswers[$token] = $answers;
+    // }
+
+
+
+
+
+
 
 
 
