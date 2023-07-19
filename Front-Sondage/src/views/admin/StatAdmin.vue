@@ -25,6 +25,34 @@ import DashboardAdmin from '../../components/DashboardAdmin.vue';
 export default{
     components: {DashboardAdmin},
     mounted() {
+ // Retrieve token from local storage
+ const token = localStorage.getItem("token");
+  
+  if (token) {
+    fetch("http://127.0.0.1:8000/api/answer/all", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+      },
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+       console.log(data.data.id);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
+  } else {
+    console.log("No token found. Please log in or get a valid token.");
+  }
+
+
+      
   const ctx1 = document.getElementById('chart1').getContext('2d');
   new Chart(ctx1, {
     type: 'pie',

@@ -22,7 +22,6 @@
       </div>
     </div>
   </template>
-  
   <script>
   import DashboardAdmin from '../../components/DashboardAdmin.vue';
   
@@ -35,31 +34,38 @@
       return {
         data: [],
         isLoading: true,
-        
       };
     },
     mounted() {
-      fetch("http://127.0.0.1:8000/api/answer/group", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          this.data = data.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });  
+      // Retrieve token from local storage
+      const token = localStorage.getItem("token");
   
+      if (token) {
+        fetch("http://127.0.0.1:8000/api/answer/group", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+          },
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.data = data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        console.log("No token found. Please log in or get a valid token.");
+      }
     },
   };
   </script>
+  
   <style>
 .titre{
     margin:30px 0px;

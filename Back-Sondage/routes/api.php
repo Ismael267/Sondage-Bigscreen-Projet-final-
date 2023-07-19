@@ -35,12 +35,13 @@ Route::get('test', function(){
 
 Route::get('/question/all',[QuestionController::class,'index']);
 Route::post('/answer/add',[AnswerController::class,'addAnswer']);
-Route::get('/answer/all',[AnswerController::class,'allAnswer']);
+
 Route::post('/survey/create',[SurveyTokenController::class,'addSurvey']);
 Route::middleware('auth:api')->group(function () {
-
+    Route::get('/answer/all',[AnswerController::class,'allAnswer']);
+    route::get('/answer/group',[AnswerController::class,"groupedAnswers"]);
     //routes accessibles uniquement si l'utilisateur est connecté
 });
 route::get('/answer/display/{token}',[AnswerController::class,'displayAnswers']);
 
-route::get('/answer/group',[AnswerController::class,"groupedAnswers"]);
+
