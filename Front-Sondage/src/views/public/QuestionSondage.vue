@@ -57,8 +57,8 @@
               votre investissement, nous vous préparons une application toujours plus facile
               à utiliser, seul ou en famille.
               Si vous désirez consulter vos réponses ultérieurement, vous pouvez consultez
-              cette adresse:http://localhost:5173/answerSondage/{{token}}</p>
-            <button @click="closePopup">Close</button>
+              cette adresse: http://localhost:5173/answerSondage/{{token}}</p>
+            <button @click="closePopup">Fermer</button>
           </div>
         </div>
         <div class="button-container">
