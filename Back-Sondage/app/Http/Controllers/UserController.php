@@ -56,7 +56,7 @@ class UserController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'mot de passe incorrect ', 'status' => 'failed'], 202);
         }
-        $userToken = $user->createToken("token",  ['*'], now()->addMinutes(15))->plainTextToken;
+        $userToken = $user->createToken("token",  ['*'])->plainTextToken;
         return response()->json(['error' => ' ', "Token" => $userToken, "Message" => "Connecté avec succès", 'status' => 'done'], 200);
     }
     public function logout(Request $request)

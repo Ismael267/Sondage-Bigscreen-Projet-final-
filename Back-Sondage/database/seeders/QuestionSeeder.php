@@ -47,7 +47,7 @@ class QuestionSeeder extends Seeder
                 'title' => 6,
                 'body' => 'Quelle marque de casque VR utilisez-vous ?',
                 'type' => 'A',
-                'choices' => ['Oculus Quest', 'Oculus Rift/s', 'Oculus Rift/s', 'Windows MixedReality', 'Valve index'],
+                'choices' => ['Oculus Quest', 'Oculus Rift/s', 'HTC Vive,', 'Windows MixedReality', 'Valve index'],
             ],
             [
                 'title' => 7,
