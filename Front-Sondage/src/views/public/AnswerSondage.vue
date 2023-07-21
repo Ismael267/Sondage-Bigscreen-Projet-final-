@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="button-container">
-        <button @click="$router.push({name: 'question'})">Retour</button>
+        <button @click="$router.push({name: 'question'})" class="submit-button"> Retour </button>
       </div>
     </div>
   </div>
