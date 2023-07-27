@@ -29,14 +29,11 @@ Route::post('logout', [UserController::class, 'logout']);
 Route::post('/question/add',[QuestionController::class,'store']);
 // route pour avoir la liste des questions
 
-Route::get('test', function(){
-    return 'OK';
-});
 
 Route::get('/question/all',[QuestionController::class,'index']);
 Route::post('/answer/add',[AnswerController::class,'addAnswer']);
 
-Route::post('/survey/create',[SurveyTokenController::class,'addSurvey']);
+
 Route::middleware('auth:api')->group(function () {
     Route::get('/answer/all',[AnswerController::class,'allAnswer']);
     route::get('/answer/group',[AnswerController::class,"groupedAnswers"]);

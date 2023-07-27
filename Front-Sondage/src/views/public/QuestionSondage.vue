@@ -56,10 +56,13 @@
             <p>Toute l’équipe de Bigscreen vous remercie pour votre engagement. Grâce à
               votre investissement, nous vous préparons une application toujours plus facile
               à utiliser, seul ou en famille.
-              Si vous désirez consulter vos réponses ultérieurement, vous pouvez consultez
-              cette adresse: http://localhost:5173/answerSondage/{{token}}</p>
+              Si vous désirez consulter vos réponses ultérieurement, vous pouvez consulter
+              cette adresse : <a :href="'http://localhost:5173/answerSondage/' + token">http://localhost:5173/answerSondage/{{token}}</a>
+            </p>
             <button @click="closePopup">Fermer</button>
           </div>
+          
+          
         </div>
         <div class="button-container">
           <button type="submit" class="submit-button">Finaliser</button>
@@ -78,7 +81,7 @@ export default {
       answers: [],
       emailError: "", 
       showPopup: false,
-    token:[]
+    token:""
     };
   },
   methods: {

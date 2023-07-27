@@ -1,23 +1,82 @@
 <template>
-    <div>
-        <DashboardAdmin/>
+  <div>
+      <DashboardAdmin/>
+      <div class="azerty">
         <div class="first-content">
-        <h1 class="firstTitle">Graphique de type pie</h1>
-        <div class="graph-container">
-            <canvas id="chart1"></canvas>
-            <canvas id="chart2"></canvas>
-            <canvas id="chart3"></canvas>
+          <h1 class="firstTitle">Graphique Question 6</h1>
+          <div class="graph-container">
+              <canvas id="chart1"></canvas>
           </div>
-          <div class="second-content">
-            <h1 class="firstTitle">Graphique de type radar</h1>
-            <div class="second-grah">
-                <canvas id="radarChart"></canvas>
-            </div>
-        </div>
+      </div>
+      <div class="first-content">
+          <h1 class="firstTitle">Graphique Question 7</h1>
+          <div class="graph-container">
+              <canvas id="chart2"></canvas>
+          </div>
+      </div>
+      </div>
+     <div class="azerty">
+      <div class="first-content">
+        <h1 class="firstTitle">Graphique Question 10</h1>
+        <div class="graph-container">
+            <canvas id="chart3"></canvas>
         </div>
     </div>
+    <div class="first-content">
+        <h1 class="firstTitle">Graphique Question 11 à 15</h1>
+        <div class="graph-container">
+            <canvas id="radarChart"></canvas>
+        </div>
+    </div>
+     </div>
   
-</template> 
+  </div>
+</template>
+
+<style>
+.azerty{
+  display: flex;
+  justify-content: space-around;
+  
+ 
+}
+.Title3{
+  color: black;
+}
+
+.graph-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  
+  }
+  
+  .graph-container canvas {
+    flex: 1;
+  max-width: 400px;
+  max-height: 400px;
+    margin: 10px;
+    border-radius: 20px;
+    padding-top: 10px;
+  }
+
+ 
+  .firstTitle{
+    text-align:center ;
+    margin: 20px;
+    color:var(--color-background) ;
+  }
+  .first-content{
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 30px 0px;
+  }
+  .second-content{
+    margin: 0px;
+  }
+ </style>
+
 <script>
 
 
@@ -143,7 +202,7 @@ const ctx3 = document.getElementById('chart3').getContext('2d');
         scales: {
           r: {
             beginAtZero: true,
-            max: 100
+            max: 20
           }
         }
       }
@@ -167,47 +226,6 @@ const ctx3 = document.getElementById('chart3').getContext('2d');
 }
 </script>
 
-<style>
-.graph-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  
-  }
-  
-  .graph-container canvas {
-    flex: 1;
-    max-width: 400px;
-    max-height: 400px;
-    margin: 10px;
-    border-radius: 20px;
-    padding-top: 10px;
-  }
-  
-  .second-grah{
-    display: flex;
-    justify-content: center;
-    margin: 10px;
-    
-  }
-  .second-graph canvas {
-    max-width: 200px;
-    max-height: 200px;
-  }
-  .firstTitle{
-    text-align:center ;
-    margin: 20px;
-    color:var(--color-background) ;
-  }
-  .first-content{
-    background-color: white;
-    border-radius: 20px;
-    padding: 20px;
-  }
-  .second-content{
-    margin: 40px;
-  }
-  </style>
 
   
   

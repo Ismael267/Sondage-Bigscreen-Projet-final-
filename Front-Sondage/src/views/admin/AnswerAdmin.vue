@@ -21,6 +21,7 @@
         </table>
       </div>
     </div>
+
   </template>
   <script>
   import DashboardAdmin from '../../components/DashboardAdmin.vue';
