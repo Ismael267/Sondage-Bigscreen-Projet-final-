@@ -1,37 +1,43 @@
 <template>
   <div>
-      <DashboardAdmin/>
-      <div class="azerty">
-        <div class="first-content">
-          <h1 class="firstTitle">Graphique Question 6</h1>
-          <div class="graph-container">
-              <canvas id="chart1"></canvas>
-          </div>
-      </div>
+    <!-- Le composant DashboardAdmin est inclus ici -->
+    <DashboardAdmin />
+    <div class="azerty">
+      <!-- Première section : Graphique Question 6 -->
       <div class="first-content">
-          <h1 class="firstTitle">Graphique Question 7</h1>
-          <div class="graph-container">
-              <canvas id="chart2"></canvas>
-          </div>
+        <h1 class="firstTitle">Graphique Question 6</h1>
+        <div class="graph-container">
+          <canvas id="chart1"></canvas>
+        </div>
       </div>
+
+      <!-- Deuxième section : Graphique Question 7 -->
+      <div class="first-content">
+        <h1 class="firstTitle">Graphique Question 7</h1>
+        <div class="graph-container">
+          <canvas id="chart2"></canvas>
+        </div>
       </div>
-     <div class="azerty">
+    </div>
+
+    <!-- Troisième section : Graphique Question 10 et Question 11 à 15 -->
+    <div class="azerty">
       <div class="first-content">
         <h1 class="firstTitle">Graphique Question 10</h1>
         <div class="graph-container">
-            <canvas id="chart3"></canvas>
+          <canvas id="chart3"></canvas>
         </div>
-    </div>
-    <div class="first-content">
+      </div>
+      <div class="first-content">
         <h1 class="firstTitle">Graphique Question 11 à 15</h1>
         <div class="graph-container">
-            <canvas id="radarChart"></canvas>
+          <canvas id="radarChart"></canvas>
         </div>
+      </div>
     </div>
-     </div>
-  
   </div>
 </template>
+
 
 <style>
 .azerty{
@@ -85,6 +91,10 @@ export default{
     components: {DashboardAdmin},
     mounted() {
  // Retrieve token from local storage
+ // Le code ici utilise la méthode fetch pour appeler une API et récupérer les réponses aux questions.
+    // Les données sont ensuite utilisées pour créer les différents graphiques avec Chart.js.
+
+    // Lorsque les données sont chargées, isLoading est défini sur false.
  const token = localStorage.getItem("token");
   
   if (token) {

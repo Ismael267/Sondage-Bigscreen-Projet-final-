@@ -1,28 +1,30 @@
 <template>
-    <div>
-      <DashboardAdmin />
-      <div v-for="(items,index) in data" :key="items.id">
-        <h1 class="titre">Sondé N°{{index}}</h1>
-        <table class="table table-dark">
-          <thead class="table-primary">
-            <tr>
-              <th scope="col">Numero de la question</th>
-              <th scope="col">Questions</th>
-              <th scope="col">Réponses</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr v-for="item, in items" :key="item.question_id">
-              <td>{{ item.question_id }}</td>
-              <td >{{item.question.body}}</td>
-              <td>{{ item.answer }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div>
+    <!-- Le composant DashboardAdmin est inclus ici -->
+    <DashboardAdmin />
+    <div v-for="(items, index) in data" :key="items.id">
+      <h1 class="titre">Sondé N°{{ index }}</h1>
+      <table class="table table-dark">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col">Numero de la question</th>
+            <th scope="col">Questions</th>
+            <th scope="col">Réponses</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <!-- Boucle sur les réponses pour afficher les informations -->
+          <tr v-for="item in items" :key="item.question_id">
+            <td>{{ item.question_id }}</td>
+            <td>{{ item.question.body }}</td>
+            <td>{{ item.answer }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+</template>
 
-  </template>
   <script>
   import DashboardAdmin from '../../components/DashboardAdmin.vue';
   
@@ -33,12 +35,17 @@
     },
     data() {
       return {
-        data: [],
+        data: [],// Le tableau vide pour stocker les réponses des sondages
         isLoading: true,
       };
     },
     mounted() {
-      // Retrieve token from local storage
+    // Le code ici utilise la méthode fetch pour appeler une API et récupérer les données.
+    // Il utilise le token stocké dans le local storage pour s'authentifier auprès de l'API.
+    // Les données sont ensuite stockées dans la propriété "data".
+
+    // Lorsque les données sont chargées, isLoading est défini sur false.
+  
       const token = localStorage.getItem("token");
   
       if (token) {

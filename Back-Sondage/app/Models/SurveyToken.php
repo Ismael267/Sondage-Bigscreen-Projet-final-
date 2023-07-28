@@ -8,18 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class SurveyToken extends Model
 {
     use HasFactory;
-      /**
-     * The attributes that are mass assignable.
+
+    /**
+     * Les attributs qui sont assignables en masse.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'token',
+    protected $fillable = ['token'];
 
-    ];
+    /**
+     * Relation avec le modèle Answer.
+     * Un token d'enquête (SurveyToken) peut avoir plusieurs réponses (Answer).
+     */
     public function answers()
-{
-    return $this->hasMany(Answer::class);
-}
-
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

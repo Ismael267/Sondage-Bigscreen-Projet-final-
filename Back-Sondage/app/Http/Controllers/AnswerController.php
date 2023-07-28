@@ -6,61 +6,50 @@ use Ramsey\Uuid\Uuid;
 use App\Models\Answer;
 use App\Models\SurveyToken;
 use Illuminate\Http\Request;
-// use App\Http\Requests\StoreAnswerRequest;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\UpdateAnswerRequest;
-use App\Models\Question;
 
 class AnswerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Affiche la liste des réponses.
      */
     public function allAnswer()
     {
-        //
         $answers = Answer::all();
         return response()->json([
-            'message' => 'Liste des reponses récupérée avec succès',
+            'message' => 'Liste des réponses récupérée avec succès',
             'data' => $answers
         ], 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Ajoute une réponse à partir des données fournies dans la requête.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-
-
-    public function store()
-    {
-    }
     public function addAnswer(Request $request)
     {
         $answers = $request->input('answers');
 
+        // Validation des données reçues
         $validator = Validator::make($request->all(), [
             'answers' => 'required|array',
             'answers.*.answer' => 'required',
             'answers.*.questionId' => 'required',
         ]);
 
+        // Si la validation échoue, renvoyer une réponse d'erreur avec les détails des erreurs
         if ($validator->fails()) {
             return response()->json(['erreur' => $validator->errors()], 405);
         }
 
+        // Générer un token unique avec la librairie Ramsey\Uuid\Uuid
         $token = Uuid::uuid4()->toString();
+
+        // Sauvegarder le token dans la table SurveyToken
         $surveyToken = new SurveyToken();
         $surveyToken->token = $token;
         $surveyToken->save();
 
+        // Enregistrer les réponses associées au token dans la table Answer
         foreach ($answers as $answer) {
             Answer::create([
                 'answer' => $answer['answer'],
@@ -69,91 +58,42 @@ class AnswerController extends Controller
             ]);
         }
 
+        // Renvoyer une réponse JSON pour indiquer que les réponses ont été créées avec succès
         return response()->json(['message' => 'Réponses créées', 'token' => $token], 201);
     }
 
+    /**
+     * Affiche les réponses associées à un token spécifié.
+     */
     public function displayAnswers($token)
-{
-    $surveyToken = SurveyToken::where('token', $token)->first();
-
-    if (!$surveyToken) {
-        return response()->json(['erreur' => 'Token invalide'], 404);
-    }
-    $answers = Answer::where('survey_token_id', $surveyToken->id)->get();
-
-    return response()->json(['answers' => $answers, 'created_at' => $surveyToken->created_at,], 200);
-}
-
-
-
-public function groupedAnswers()
-{
-    $answers = Answer::with('question')->get()->groupBy('survey_token_id');
-
-    return response()->json([
-        'message' => 'Liste des réponses regroupées par surveytoken récupérée avec succès',
-        'data' => $answers
-    ], 200);
-}
-
-
-
-  // $tokens = SurveyToken::pluck('token')->all();
-    // $groupedAnswers = [];
-
-    // foreach ($tokens as $token) {
-    //     $answers = Answer::where('survey_token_id', $token)->get();
-    //     $groupedAnswers[$token] = $answers;
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Answer $answer)
     {
-        //
+        // Recherche du token dans la table SurveyToken
+        $surveyToken = SurveyToken::where('token', $token)->first();
+
+        // Si le token n'existe pas, renvoyer une réponse d'erreur
+        if (!$surveyToken) {
+            return response()->json(['erreur' => 'Token invalide'], 404);
+        }
+
+        // Récupérer les réponses associées au token depuis la table Answer
+        $answers = Answer::where('survey_token_id', $surveyToken->id)->get();
+
+        // Renvoyer les réponses sous forme de réponse JSON
+        return response()->json(['answers' => $answers, 'created_at' => $surveyToken->created_at], 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Récupère les réponses regroupées par token.
      */
-    public function edit(Answer $answer)
+    public function groupedAnswers()
     {
-        //
-    }
+        // Récupérer les réponses avec leurs questions associées, regroupées par token
+        $answers = Answer::with('question')->get()->groupBy('survey_token_id');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAnswerRequest $request, Answer $answer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Answer $answer)
-    {
-        //
+        // Renvoyer les réponses regroupées sous forme de réponse JSON
+        return response()->json([
+            'message' => 'Liste des réponses regroupées par surveytoken récupérée avec succès',
+            'data' => $answers
+        ], 200);
     }
 }

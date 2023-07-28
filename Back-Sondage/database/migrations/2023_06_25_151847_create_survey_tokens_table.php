@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Crée la table "survey_tokens" dans la base de données
         Schema::create('survey_tokens', function (Blueprint $table) {
+            // Identifiant unique auto-incrémenté pour chaque enregistrement
             $table->id();
+            // Token unique pour les enquêtes, utilisé pour regrouper les réponses
             $table->string('token')->unique();
+            // Colonnes de date de création (created_at) et de date de mise à jour (updated_at)
             $table->timestamps();
         });
     }
@@ -23,6 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Supprime la table "survey_tokens" de la base de données si elle existe
         Schema::dropIfExists('survey_tokens');
     }
 };

@@ -8,29 +8,38 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     use HasFactory;
+
     /**
-     * The attributes that are mass assignable.
+     * Les attributs qui sont assignables en masse.
      *
      * @var array<string>
      */
-    protected $fillable = ['answer','question_id', 'survey_token_id'];
+    protected $fillable = ['answer', 'question_id', 'survey_token_id'];
 
-     /**
-     * The attributes that should be cast.
+    /**
+     * Les attributs qui devraient être convertis.
      *
      * @var array
      */
     protected $casts = [
-        'answer' => 'array',
+        'answer' => 'array', // L'attribut 'answer' sera converti en un tableau associatif lors de la récupération des données de la base de données.
     ];
 
+    /**
+     * Relation avec le modèle Question.
+     * Chaque réponse (Answer) appartient à une question (Question).
+     */
     public function question()
     {
         return $this->belongsTo(Question::class);
     }
-    public function surveyToken()
-{
-    return $this->belongsTo(SurveyToken::class);
-}
 
+    /**
+     * Relation avec le modèle SurveyToken.
+     * Chaque réponse (Answer) appartient à un token d'enquête (SurveyToken).
+     */
+    public function surveyToken()
+    {
+        return $this->belongsTo(SurveyToken::class);
+    }
 }
